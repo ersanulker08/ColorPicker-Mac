@@ -2,50 +2,162 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:ColorPickerApp"
         x:Class="ColorPickerApp.MainWindow"
-        Width="560" Height="320" CanResize="False"
+        Width="800" Height="460" MinWidth="740" MinHeight="380"
         Title="ColorPicker">
 
-    <Grid ColumnDefinitions="200,*">
+    <Grid ColumnDefinitions="230,*">
 
-        <!-- SOL TARAF: proje adı + proje listesi -->
-        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" Margin="8">
-            <TextBox x:Name="ProjectNameBox" Grid.Row="0"
-                     PlaceholderText="Proje adı" Margin="0,0,0,8" />
+        <!-- SOL PANEL: seçili proje + tüm projeler -->
+        <Border Grid.Column="0" Background="{DynamicResource PanelBg}"
+                BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,1,0">
+            <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16">
 
-            <ListBox x:Name="ProjectList" Grid.Row="1">
-                <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="local:Project">
-                        <TextBlock Text="{Binding Name}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <TextBlock Grid.Row="0" Classes="caption" Text="{local:T SelectedProject}" />
+                <TextBox x:Name="ProjectNameBox" Grid.Row="1" Margin="0,8,0,20"
+                         PlaceholderText="{local:T ProjectNamePlaceholder}" FontWeight="SemiBold" />
 
-            <Button x:Name="AddProjectButton" Grid.Row="2"
-                    Content="+ Yeni Proje" Margin="0,8,0,0"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center" />
-        </Grid>
+                <TextBlock Grid.Row="2" Classes="caption" Text="{local:T AllProjects}" Margin="0,0,0,8" />
+                <ListBox x:Name="ProjectList" Grid.Row="3" Classes="projects">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:Project">
+                            <Border Background="Transparent" PointerPressed="OnProjectPointerPressed">
+                                <Border.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="{local:T DeleteProject}" Click="OnDeleteProjectClick" />
+                                    </ContextMenu>
+                                </Border.ContextMenu>
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1" Text="{Binding ColorCount}"
+                                               Classes="caption" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-        <!-- SAĞ TARAF: damlalık + renk satırları -->
-        <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="0,8,8,8">
-            <Button x:Name="DropperButton" Grid.Row="0"
-                    Content="Damlalık" Margin="0,0,0,8" />
+                <Button x:Name="AddProjectButton" Grid.Row="4" Classes="accent" Margin="0,12,0,0"
+                        Height="38" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Path Classes="glyphWhite" Data="{StaticResource PlusIcon}" Width="13" Height="13" />
+                        <TextBlock Text="{local:T NewProject}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
 
-            <ListBox x:Name="ColorList" Grid.Row="1">
-                <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="local:ColorEntry">
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-                            <Border Grid.Column="0" Width="24" Height="24"
-                                    CornerRadius="4" Margin="0,0,8,0"
-                                    Background="{Binding Hex}" />
-                            <TextBox Grid.Column="1" Text="{Binding Name}" />
-                            <TextBlock Grid.Column="2" Text="{Binding Hex}"
-                                       VerticalAlignment="Center" Margin="8,0" />
-                            <Button Grid.Column="3" Content="✕" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <!-- SAĞ PANEL: damlalık + renkler -->
+        <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" Margin="20,18,20,16">
+
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,0,0,16">
+                <Button x:Name="DropperButton" Classes="accent" Width="44" Height="44"
+                        Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                        ToolTip.Tip="{local:T DropperTip}">
+                    <Path Classes="glyphWhite" Data="{StaticResource DropperIcon}"
+                          Width="22" Height="22" RenderTransform="rotate(45deg)" />
+                </Button>
+                <TextBlock x:Name="HintText" Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center"
+                           Foreground="{DynamicResource MutedText}" />
+                <TextBlock x:Name="CountText" Grid.Column="2" Classes="caption" VerticalAlignment="Center" />
+                <Button x:Name="SettingsButton" Grid.Column="3" Classes="icon" Margin="10,0,0,0"
+                        ToolTip.Tip="{local:T Settings}">
+                    <Path Classes="glyph" Data="{StaticResource SettingsIcon}" Width="18" Height="18" />
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <ListBox x:Name="ColorList" Classes="cards">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="local:ColorEntry">
+                            <Border Classes="card">
+                                <StackPanel Spacing="10">
+
+                                    <!-- Üst satır: renk kutusu, isim, silme -->
+                                    <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <Border Width="34" Height="34" CornerRadius="9" Margin="0,0,12,0"
+                                                BorderBrush="{DynamicResource LineBrush}" BorderThickness="1"
+                                                Background="{Binding Hex}" />
+                                        <TextBox Grid.Column="1" Text="{Binding Name}"
+                                                 TextChanged="OnColorNameChanged" />
+                                        <Button Grid.Column="2" Classes="icon" Margin="8,0,0,0"
+                                                Click="OnDeleteClick" ToolTip.Tip="{local:T DeleteColor}">
+                                            <Path Classes="glyph" Data="{StaticResource CloseIcon}" />
+                                        </Button>
+                                    </Grid>
+
+                                    <!-- Alt satır: HEX, R, G, B ve her birinin kopyala düğmesi -->
+                                    <Grid ColumnDefinitions="1.7*,*,*,*" ColumnSpacing="6">
+
+                                        <Border Grid.Column="0" Classes="chip">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                                    <TextBlock Classes="chipLabel" Text="HEX" />
+                                                    <TextBlock Classes="chipValue" Text="{Binding Hex}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Classes="icon" Tag="{Binding Hex}"
+                                                        Click="OnCopyClick" ToolTip.Tip="{local:T Copy}">
+                                                    <Path Classes="glyph" Data="{StaticResource CopyIcon}" />
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+
+                                        <Border Grid.Column="1" Classes="chip">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                                    <TextBlock Classes="chipLabel" Text="R" />
+                                                    <TextBlock Classes="chipValue" Text="{Binding R}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Classes="icon" Tag="{Binding R}"
+                                                        Click="OnCopyClick" ToolTip.Tip="{local:T Copy}">
+                                                    <Path Classes="glyph" Data="{StaticResource CopyIcon}" />
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+
+                                        <Border Grid.Column="2" Classes="chip">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                                    <TextBlock Classes="chipLabel" Text="G" />
+                                                    <TextBlock Classes="chipValue" Text="{Binding G}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Classes="icon" Tag="{Binding G}"
+                                                        Click="OnCopyClick" ToolTip.Tip="{local:T Copy}">
+                                                    <Path Classes="glyph" Data="{StaticResource CopyIcon}" />
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+
+                                        <Border Grid.Column="3" Classes="chip">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                                    <TextBlock Classes="chipLabel" Text="B" />
+                                                    <TextBlock Classes="chipValue" Text="{Binding B}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Classes="icon" Tag="{Binding B}"
+                                                        Click="OnCopyClick" ToolTip.Tip="{local:T Copy}">
+                                                    <Path Classes="glyph" Data="{StaticResource CopyIcon}" />
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBlock x:Name="EmptyText" Text="{local:T Empty}"
+                           TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Foreground="{DynamicResource MutedText}" IsHitTestVisible="False" />
+            </Grid>
+
+            <Border x:Name="ToastBorder" Grid.Row="2" IsVisible="False" HorizontalAlignment="Right"
+                    Margin="0,10,0,0" Padding="12,6" CornerRadius="8"
+                    Background="{DynamicResource AccentSoft}">
+                <TextBlock x:Name="ToastText" FontSize="12" />
+            </Border>
         </Grid>
 
     </Grid>

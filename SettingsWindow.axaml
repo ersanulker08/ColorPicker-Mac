@@ -1,0 +1,34 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:ColorPickerApp"
+        x:Class="ColorPickerApp.SettingsWindow"
+        Width="400" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Title="{local:T Settings}">
+
+    <StackPanel Margin="24" Spacing="22">
+
+        <!-- Her zaman üstte -->
+        <Grid ColumnDefinitions="*,Auto">
+            <StackPanel VerticalAlignment="Center" Spacing="2">
+                <TextBlock Text="{local:T AlwaysOnTop}" FontWeight="SemiBold" />
+                <TextBlock Text="{local:T AlwaysOnTopDesc}" FontSize="12" TextWrapping="Wrap"
+                           Foreground="{DynamicResource MutedText}" />
+            </StackPanel>
+            <ToggleSwitch x:Name="AlwaysOnTopSwitch" Grid.Column="1" OnContent="" OffContent=""
+                          Margin="16,0,0,0" VerticalAlignment="Center" />
+        </Grid>
+
+        <!-- Dil -->
+        <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="{local:T Language}" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <ComboBox x:Name="LanguageBox" Grid.Column="1" Width="150">
+                <ComboBoxItem Content="English" />
+                <ComboBoxItem Content="Türkçe" />
+            </ComboBox>
+        </Grid>
+
+        <Button x:Name="CloseButton" Classes="accent" HorizontalAlignment="Right"
+                Padding="22,8" Content="{local:T Close}" />
+    </StackPanel>
+</Window>
