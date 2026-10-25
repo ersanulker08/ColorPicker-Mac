@@ -1,8 +1,18 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.IO;
+
+
 
 bool wasLeftDown = false;
+var savedColors = new List<string>();
+
+Console.CancelKeyPress += (sender, e) =>
+{
+    File.WriteAllLines("renkler.txt", savedColors);
+    Console.WriteLine("Renkler renkler.txt dosyasına kaydedildi.");
+};
 
 while (true)
 {
@@ -18,6 +28,7 @@ while (true)
         var (r, g, b) = Native.ReadPixel(location.X, location.Y);
         Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}");
         Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}, HEX={Native.ToHex(r, g, b)}");
+        savedColors.Add(Native.ToHex(r, g, b));
     }
 
     wasLeftDown = isLeftDown;
