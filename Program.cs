@@ -17,6 +17,7 @@ while (true)
 
         var (r, g, b) = Native.ReadPixel(location.X, location.Y);
         Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}");
+        Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}, HEX={Native.ToHex(r, g, b)}");
     }
 
     wasLeftDown = isLeftDown;
@@ -103,5 +104,10 @@ static class Native
         CGImageRelease(imageRef);
 
         return (r, g, b);
+    }
+
+    public static string ToHex(byte r, byte g, byte b)
+    {
+        return $"#{r:X2}{g:X2}{b:X2}";
     }
 }
