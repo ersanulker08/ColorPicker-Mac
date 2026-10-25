@@ -1,5 +1,9 @@
 # ColorPicker for macOS
 
+<p align="center">
+  <img src="docs/screenshot.png" alt="ColorPicker main window" width="720">
+</p>
+
 A small desktop app that lets you pick colors from anywhere on your screen with an eyedropper, organize them into projects, and copy their HEX / R / G / B values with one click.
 
 > macOS için küçük bir masaüstü uygulaması: damlalıkla ekranın herhangi bir yerinden renk seçersin, renkleri projelere ayırırsın ve HEX / R / G / B değerlerini tek tıkla kopyalarsın.
@@ -55,7 +59,7 @@ A small desktop app that lets you pick colors from anywhere on your screen with 
 ## How to run
 
 ```bash
-git clone <this-repository-url>
+git clone https://github.com/ersanulker08/ColorPicker-Mac.git
 cd ColorPicker-Mac
 dotnet run
 ```
