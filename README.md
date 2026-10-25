@@ -8,6 +8,43 @@
   <a href="https://github.com/ersanulker08/ColorPicker-Mac/releases/latest"><b>⬇️ Download for macOS (Apple Silicon) / macOS için indir</b></a>
 </p>
 
+## ⚠️ macOS says it "could not verify" the app? Do this first
+
+> [!WARNING]
+> **This is normal. The app is safe to open, but it is not signed with a paid Apple Developer account**, so macOS blocks it the first time. You fix it once, in *System Settings*:
+>
+> 1. Open the downloaded `.dmg` and drag **ColorPicker** into **Applications**.
+> 2. Open **ColorPicker** from Applications. macOS shows *"Apple could not verify ColorPicker is free of malware…"*. Click **Done** (do **not** click *Move to Trash*).
+> 3. Open **System Settings → Privacy & Security**.
+> 4. Scroll down to the **Security** section. You will see *"ColorPicker was blocked to protect your Mac"*. Click **Open Anyway**.
+> 5. Enter your password or use Touch ID, then click **Open**.
+> 6. When the app asks for **Screen Recording**, allow it (*System Settings → Privacy & Security → Screen Recording → turn on ColorPicker*), then quit and reopen the app. Without this permission every color comes out as `#000000`.
+>
+> The same warning can also appear when you open the `.dmg` itself; use the same **Open Anyway** button. You need to repeat this for each newly downloaded version.
+>
+> Prefer the terminal? This does steps 2–5 in one line:
+>
+> ```bash
+> xattr -dr com.apple.quarantine /Applications/ColorPicker.app
+> ```
+
+> ## ⚠️ macOS "doğrulanamadı" derse önce bunu yap
+>
+> **Bu normaldir. Uygulamayı açmak güvenlidir, ama ücretli bir Apple Developer hesabıyla imzalı değildir**, bu yüzden macOS ilk seferde engeller. Bunu **Sistem Ayarları**'ndan bir kez düzeltirsin:
+>
+> 1. İndirdiğin `.dmg`'yi aç ve **ColorPicker**'ı **Applications** klasörüne sürükle.
+> 2. **Applications**'tan **ColorPicker**'ı aç. macOS *"Apple, ColorPicker uygulamasının Mac'inize zarar verebilecek kötü amaçlı yazılım içermediğini doğrulayamadı"* gibi bir uyarı gösterir. **Bitti**'ye (ya da **Tamam**'a) bas, *Çöp Sepetine Taşı*'ya **basma**.
+> 3. **Sistem Ayarları → Gizlilik ve Güvenlik** sayfasını aç.
+> 4. Aşağı kaydır, **Güvenlik** bölümünde *"ColorPicker, Mac'inizi korumak için engellendi"* yazısını göreceksin. Yanındaki **Yine de Aç** düğmesine bas.
+> 5. Parolanı gir ya da Touch ID kullan, sonra **Aç**'a bas.
+> 6. Uygulama **Ekran Kaydı** izni isterse izin ver (*Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı → ColorPicker'ı aç*), sonra uygulamayı kapatıp yeniden aç. Bu izin yoksa bütün renkler `#000000` çıkar.
+>
+> Aynı uyarı `.dmg` dosyasını açarken de çıkabilir; aynı **Yine de Aç** düğmesini kullan. Yeni indirdiğin her sürüm için bunu yeniden yapman gerekir.
+>
+> Terminali tercih edersen 2–5. adımları tek satırda yapar (yukarıdaki `xattr` komutu).
+
+---
+
 A small desktop app that lets you pick colors from anywhere on your screen with an eyedropper, organize them into projects, and copy their HEX / R / G / B values with one click.
 
 > macOS için küçük bir masaüstü uygulaması: damlalıkla ekranın herhangi bir yerinden renk seçersin, renkleri projelere ayırırsın ve HEX / R / G / B değerlerini tek tıkla kopyalarsın.
@@ -64,28 +101,12 @@ A small desktop app that lets you pick colors from anywhere on your screen with 
 
 Download `ColorPicker-x.y.z.dmg` from the [Releases](https://github.com/ersanulker08/ColorPicker-Mac/releases) page, open it, and drag **ColorPicker** into **Applications**. It is built for Apple Silicon (M1 and newer) Macs.
 
-> [!WARNING]
-> The app is not signed with a paid Apple Developer ID, so macOS says it "could not verify it is free of malware" and will not open it at first. This is expected for free, hobby apps. To open it anyway:
->
-> 1. Drag **ColorPicker** into **Applications** and try to open it once (macOS will refuse).
-> 2. Open *System Settings → Privacy & Security*, scroll down to the **Security** section and click **Open Anyway** next to "ColorPicker was blocked". Confirm with your password or Touch ID.
->
-> (On older macOS versions, right-click the app → **Open** → **Open** also works.) Or, if you prefer the terminal, remove the quarantine flag once:
->
-> ```bash
-> xattr -dr com.apple.quarantine /Applications/ColorPicker.app
-> ```
->
-> Then give **ColorPicker** itself the Screen Recording permission (*System Settings → Privacy & Security → Screen Recording*) and restart it.
+> [!NOTE]
+> If macOS refuses to open the app ("could not verify…"), follow the steps in the **⚠️ section at the top of this page** (*Privacy & Security → Open Anyway*).
 
 > **Uygulama olarak kurulum (.NET gerekmez):** [Releases](https://github.com/ersanulker08/ColorPicker-Mac/releases) sayfasından `ColorPicker-x.y.z.dmg` dosyasını indir, aç ve **ColorPicker**'ı **Applications** klasörüne sürükle. Apple Silicon (M1 ve sonrası) Mac'ler için derlenmiştir.
 >
-> **Uyarı:** Uygulama ücretli bir Apple Developer ID ile imzalı değil, bu yüzden macOS "kötü amaçlı yazılım içermediği doğrulanamadı" der ve ilk başta açmaz. Ücretsiz, hobi uygulamalarında bu normaldir. Yine de açmak için:
->
-> 1. **ColorPicker**'ı **Applications**'a sürükle ve bir kez açmayı dene (macOS reddedecek).
-> 2. *Sistem Ayarları → Gizlilik ve Güvenlik* sayfasını aç, aşağıdaki **Güvenlik** bölümünde "ColorPicker engellendi" yazısının yanındaki **Yine de Aç** düğmesine bas. Parolanla ya da Touch ID ile onayla.
->
-> (Eski macOS sürümlerinde uygulamaya sağ tıkla → **Aç** → **Aç** de işe yarar.) Terminali tercih edersen karantina işaretini bir kez kaldırabilirsin (yukarıdaki `xattr` komutu). Sonra Ekran Kaydı iznini artık **ColorPicker**'ın kendisine ver (*Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı*) ve uygulamayı yeniden başlat.
+> **Not:** macOS uygulamayı açmazsa ("doğrulanamadı"), bu sayfanın **en üstündeki ⚠️ bölümdeki** adımları izle (*Gizlilik ve Güvenlik → Yine de Aç*).
 
 ## How to run from source
 
