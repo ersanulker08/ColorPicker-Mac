@@ -483,3 +483,4 @@ $RECYCLE.BIN/
 
 # Üretilen uygulama paketi (tools/build-app.sh)
 dist/
+tools/.venv/

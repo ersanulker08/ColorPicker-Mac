@@ -60,13 +60,23 @@ PLIST
 echo "==> 4/5  İmzalanıyor (ad-hoc)"
 codesign --force --deep --sign - "$APP"
 
-echo "==> 5/5  DMG oluşturuluyor"
-STAGING="$DIST/dmg"
-mkdir -p "$STAGING"
-cp -R "$APP" "$STAGING/"
-ln -s /Applications "$STAGING/Applications"
-hdiutil create -volname "$APP_NAME" -srcfolder "$STAGING" -ov -format UDZO "$DIST/$APP_NAME-$VERSION.dmg" > /dev/null
-rm -rf "$STAGING" "$DIST/publish"
+echo "==> 5/5  DMG oluşturuluyor (arka plan resmi, ok ve simge yerleşimiyle)"
+# dmgbuild, DMG penceresinin görünümünü ayarlayan küçük bir Python aracı.
+# Sistemi kirletmemek için tools/.venv içine kurulur (git'e girmez).
+if [ ! -x tools/.venv/bin/dmgbuild ]; then
+    python3 -m venv tools/.venv
+    tools/.venv/bin/pip install --quiet dmgbuild
+fi
+
+# Retina ekranlar için 1x ve 2x resmi tek bir TIFF'te birleştir
+tiffutil -cathidpicheck assets/dmg-background.png assets/dmg-background@2x.png -out "$DIST/dmg-background.tiff" > /dev/null 2>&1
+
+tools/.venv/bin/dmgbuild -s tools/dmg_settings.py \
+    -D app_path="$APP" \
+    -D icon_path="$APP/Contents/Resources/AppIcon.icns" \
+    -D background_path="$DIST/dmg-background.tiff" \
+    "$APP_NAME" "$DIST/$APP_NAME-$VERSION.dmg" > /dev/null
+rm -rf "$DIST/publish" "$DIST/dmg-background.tiff"
 
 # Release derlemesi editörün (VS Code) paket listesini değiştirir ve Program.cs'te
 # ".WithDeveloperTools" hatası gösterir. Debug ayarına geri dönüyoruz.
