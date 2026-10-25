@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:ColorPickerApp"
+        x:Class="ColorPickerApp.MainWindow"
+        Width="560" Height="320" CanResize="False"
+        Title="ColorPicker">
+
+    <Grid ColumnDefinitions="200,*">
+
+        <!-- SOL TARAF: proje adı + proje listesi -->
+        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto" Margin="8">
+            <TextBox x:Name="ProjectNameBox" Grid.Row="0"
+                     PlaceholderText="Proje adı" Margin="0,0,0,8" />
+
+            <ListBox x:Name="ProjectList" Grid.Row="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:Project">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Button x:Name="AddProjectButton" Grid.Row="2"
+                    Content="+ Yeni Proje" Margin="0,8,0,0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center" />
+        </Grid>
+
+        <!-- SAĞ TARAF: damlalık + renk satırları -->
+        <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="0,8,8,8">
+            <Button x:Name="DropperButton" Grid.Row="0"
+                    Content="Damlalık" Margin="0,0,0,8" />
+
+            <ListBox x:Name="ColorList" Grid.Row="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:ColorEntry">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                            <Border Grid.Column="0" Width="24" Height="24"
+                                    CornerRadius="4" Margin="0,0,8,0"
+                                    Background="{Binding Hex}" />
+                            <TextBox Grid.Column="1" Text="{Binding Name}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Hex}"
+                                       VerticalAlignment="Center" Margin="8,0" />
+                            <Button Grid.Column="3" Content="✕" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+    </Grid>
+</Window>
