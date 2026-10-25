@@ -65,7 +65,12 @@ A small desktop app that lets you pick colors from anywhere on your screen with 
 Download `ColorPicker-x.y.z.dmg` from the [Releases](https://github.com/ersanulker08/ColorPicker-Mac/releases) page, open it, and drag **ColorPicker** into **Applications**. It is built for Apple Silicon (M1 and newer) Macs.
 
 > [!WARNING]
-> The app is not signed with a paid Apple Developer ID, so macOS may say it "cannot be opened". To open it anyway: right-click the app → **Open** → **Open**. Or remove the quarantine flag once:
+> The app is not signed with a paid Apple Developer ID, so macOS says it "could not verify it is free of malware" and will not open it at first. This is expected for free, hobby apps. To open it anyway:
+>
+> 1. Drag **ColorPicker** into **Applications** and try to open it once (macOS will refuse).
+> 2. Open *System Settings → Privacy & Security*, scroll down to the **Security** section and click **Open Anyway** next to "ColorPicker was blocked". Confirm with your password or Touch ID.
+>
+> (On older macOS versions, right-click the app → **Open** → **Open** also works.) Or, if you prefer the terminal, remove the quarantine flag once:
 >
 > ```bash
 > xattr -dr com.apple.quarantine /Applications/ColorPicker.app
@@ -75,7 +80,12 @@ Download `ColorPicker-x.y.z.dmg` from the [Releases](https://github.com/ersanulk
 
 > **Uygulama olarak kurulum (.NET gerekmez):** [Releases](https://github.com/ersanulker08/ColorPicker-Mac/releases) sayfasından `ColorPicker-x.y.z.dmg` dosyasını indir, aç ve **ColorPicker**'ı **Applications** klasörüne sürükle. Apple Silicon (M1 ve sonrası) Mac'ler için derlenmiştir.
 >
-> **Uyarı:** Uygulama ücretli bir Apple Developer ID ile imzalı değil, bu yüzden macOS "açılamıyor" diyebilir. Yine de açmak için uygulamaya sağ tıkla → **Aç** → **Aç**. Ya da karantina işaretini bir kez kaldır (yukarıdaki `xattr` komutu). Sonra Ekran Kaydı iznini artık **ColorPicker**'ın kendisine ver (*Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı*) ve uygulamayı yeniden başlat.
+> **Uyarı:** Uygulama ücretli bir Apple Developer ID ile imzalı değil, bu yüzden macOS "kötü amaçlı yazılım içermediği doğrulanamadı" der ve ilk başta açmaz. Ücretsiz, hobi uygulamalarında bu normaldir. Yine de açmak için:
+>
+> 1. **ColorPicker**'ı **Applications**'a sürükle ve bir kez açmayı dene (macOS reddedecek).
+> 2. *Sistem Ayarları → Gizlilik ve Güvenlik* sayfasını aç, aşağıdaki **Güvenlik** bölümünde "ColorPicker engellendi" yazısının yanındaki **Yine de Aç** düğmesine bas. Parolanla ya da Touch ID ile onayla.
+>
+> (Eski macOS sürümlerinde uygulamaya sağ tıkla → **Aç** → **Aç** de işe yarar.) Terminali tercih edersen karantina işaretini bir kez kaldırabilirsin (yukarıdaki `xattr` komutu). Sonra Ekran Kaydı iznini artık **ColorPicker**'ın kendisine ver (*Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı*) ve uygulamayı yeniden başlat.
 
 ## How to run from source
 
