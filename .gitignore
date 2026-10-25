@@ -480,3 +480,6 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Üretilen uygulama paketi (tools/build-app.sh)
+dist/

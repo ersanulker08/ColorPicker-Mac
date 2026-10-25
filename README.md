@@ -4,6 +4,10 @@
   <img src="docs/screenshot.png" alt="ColorPicker main window" width="720">
 </p>
 
+<p align="center">
+  <a href="https://github.com/ersanulker08/ColorPicker-Mac/releases/latest"><b>⬇️ Download for macOS (Apple Silicon) / macOS için indir</b></a>
+</p>
+
 A small desktop app that lets you pick colors from anywhere on your screen with an eyedropper, organize them into projects, and copy their HEX / R / G / B values with one click.
 
 > macOS için küçük bir masaüstü uygulaması: damlalıkla ekranın herhangi bir yerinden renk seçersin, renkleri projelere ayırırsın ve HEX / R / G / B değerlerini tek tıkla kopyalarsın.
@@ -15,14 +19,14 @@ A small desktop app that lets you pick colors from anywhere on your screen with 
 > [!IMPORTANT]
 > **macOS only.** The screen-reading code uses macOS system libraries (CoreGraphics), so the app does **not** run on Windows or Linux.
 >
-> **.NET 10 SDK is required.** Install it from <https://dotnet.microsoft.com/download> and check it with `dotnet --version`.
+> **.NET 10 SDK is required to run from source** (not needed if you install the `.dmg`). Install it from <https://dotnet.microsoft.com/download> and check it with `dotnet --version`.
 >
 > **Screen Recording permission is required.** On the first run, macOS asks for it. If every color comes out as `#000000`, open *System Settings → Privacy & Security → Screen Recording*, enable the app you started it from (for example Terminal or VS Code), then restart that app.
 
 > **Önce bunlar / Gereklilikler**
 >
 > - **Sadece macOS.** Ekran okuma kodu macOS sistem kütüphanelerini (CoreGraphics) kullanıyor, bu yüzden uygulama Windows ya da Linux'ta **çalışmaz**.
-> - **.NET 10 SDK gerekli.** <https://dotnet.microsoft.com/download> adresinden kur, `dotnet --version` ile kontrol et.
+> - **.NET 10 SDK, kaynak koddan çalıştırmak için gerekli** (`.dmg` ile kurarsan gerekmez). <https://dotnet.microsoft.com/download> adresinden kur, `dotnet --version` ile kontrol et.
 > - **Ekran Kaydı izni gerekli.** İlk çalıştırmada macOS izin ister. Bütün renkler `#000000` çıkıyorsa *Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı* bölümünden uygulamayı başlattığın programı (örneğin Terminal ya da VS Code) aç ve o programı yeniden başlat.
 
 ### Where your data is saved
@@ -56,7 +60,24 @@ A small desktop app that lets you pick colors from anywhere on your screen with 
 
 ---
 
-## How to run
+## Install as an app (no .NET needed)
+
+Download `ColorPicker-x.y.z.dmg` from the [Releases](https://github.com/ersanulker08/ColorPicker-Mac/releases) page, open it, and drag **ColorPicker** into **Applications**. It is built for Apple Silicon (M1 and newer) Macs.
+
+> [!WARNING]
+> The app is not signed with a paid Apple Developer ID, so macOS may say it "cannot be opened". To open it anyway: right-click the app → **Open** → **Open**. Or remove the quarantine flag once:
+>
+> ```bash
+> xattr -dr com.apple.quarantine /Applications/ColorPicker.app
+> ```
+>
+> Then give **ColorPicker** itself the Screen Recording permission (*System Settings → Privacy & Security → Screen Recording*) and restart it.
+
+> **Uygulama olarak kurulum (.NET gerekmez):** [Releases](https://github.com/ersanulker08/ColorPicker-Mac/releases) sayfasından `ColorPicker-x.y.z.dmg` dosyasını indir, aç ve **ColorPicker**'ı **Applications** klasörüne sürükle. Apple Silicon (M1 ve sonrası) Mac'ler için derlenmiştir.
+>
+> **Uyarı:** Uygulama ücretli bir Apple Developer ID ile imzalı değil, bu yüzden macOS "açılamıyor" diyebilir. Yine de açmak için uygulamaya sağ tıkla → **Aç** → **Aç**. Ya da karantina işaretini bir kez kaldır (yukarıdaki `xattr` komutu). Sonra Ekran Kaydı iznini artık **ColorPicker**'ın kendisine ver (*Sistem Ayarları → Gizlilik ve Güvenlik → Ekran Kaydı*) ve uygulamayı yeniden başlat.
+
+## How to run from source
 
 ```bash
 git clone https://github.com/ersanulker08/ColorPicker-Mac.git
@@ -64,7 +85,13 @@ cd ColorPicker-Mac
 dotnet run
 ```
 
-> **Nasıl çalıştırılır:** Yukarıdaki üç komut: repoyu indir, klasöre gir, `dotnet run` yaz.
+To build the `.app` and `.dmg` yourself (they appear in `dist/`):
+
+```bash
+./tools/build-app.sh 1.0.0
+```
+
+> **Kaynak koddan çalıştırma:** Yukarıdaki üç komut: repoyu indir, klasöre gir, `dotnet run` yaz. Kendi `.app` ve `.dmg` dosyanı üretmek için `./tools/build-app.sh 1.0.0` komutunu çalıştır, sonuç `dist/` klasörüne çıkar.
 
 ## Features
 
