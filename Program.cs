@@ -2,25 +2,25 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 
+bool wasLeftDown = false;
+
 while (true)
 {
-    IntPtr eventRef = Native.CGEventCreate(IntPtr.Zero);
-    CGPoint location = Native.CGEventGetLocation(eventRef);
-    Native.CFRelease(eventRef);
+    bool isLeftDown = Native.CGEventSourceButtonState(0, 0);
 
-    Console.WriteLine($"X: {location.X}, Y: {location.Y}");
-
-    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Spacebar)
+    // Sadece basıldığı anda çalışacak şekilde kontrol ediyoruz
+    if (isLeftDown && !wasLeftDown)
     {
-        Console.WriteLine("Renk okuma başlıyor...");
-        Console.WriteLine($"Ekran izni: {Native.CGPreflightScreenCaptureAccess()}");
+        IntPtr eventRef = Native.CGEventCreate(IntPtr.Zero);
+        CGPoint location = Native.CGEventGetLocation(eventRef);
+        Native.CFRelease(eventRef);
 
         var (r, g, b) = Native.ReadPixel(location.X, location.Y);
-        Console.WriteLine($"Renk: R={r}, G={g}, B={b}");
-        break;
+        Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}");
     }
 
-    Thread.Sleep(500);
+    wasLeftDown = isLeftDown;
+    Thread.Sleep(20);
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -75,6 +75,9 @@ static class Native
 
     [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
     public static extern void CFRelease(IntPtr obj);
+
+    [DllImport("/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics")]
+    public static extern bool CGEventSourceButtonState(int stateId, uint button);// mouse tuşunun basılı olup olmadığını sorgular
 
     public static (byte r, byte g, byte b) ReadPixel(double x, double y)
     {
