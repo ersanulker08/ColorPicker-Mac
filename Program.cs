@@ -1,24 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.IO;
 
+Console.Write("Proje adı: ");
+string projectName = Console.ReadLine()?.Trim() ?? "";
+if (string.IsNullOrWhiteSpace(projectName))
+{
+    projectName = "Genel";
+}
 
+Directory.CreateDirectory(projectName);
+string filePath = Path.Combine(projectName, "renkler.txt");
+Console.WriteLine($"Kayıt dosyası: {filePath}");
 
-bool wasLeftDown = false;
 var savedColors = new List<string>();
 
 Console.CancelKeyPress += (sender, e) =>
 {
-    File.WriteAllLines("renkler.txt", savedColors);
-    Console.WriteLine("Renkler renkler.txt dosyasına kaydedildi.");
+    if (savedColors.Count > 0)
+    {
+        File.AppendAllLines(filePath, savedColors);
+        Console.WriteLine($"{savedColors.Count} renk {filePath} dosyasına eklendi.");
+    }
 };
+
+bool wasLeftDown = false;
 
 while (true)
 {
     bool isLeftDown = Native.CGEventSourceButtonState(0, 0);
 
-    // Sadece basıldığı anda çalışacak şekilde kontrol ediyoruz
     if (isLeftDown && !wasLeftDown)
     {
         IntPtr eventRef = Native.CGEventCreate(IntPtr.Zero);
@@ -26,9 +39,10 @@ while (true)
         Native.CFRelease(eventRef);
 
         var (r, g, b) = Native.ReadPixel(location.X, location.Y);
-        Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}");
-        Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}, HEX={Native.ToHex(r, g, b)}");
-        savedColors.Add(Native.ToHex(r, g, b));
+        string hex = Native.ToHex(r, g, b);
+
+        Console.WriteLine($"X: {location.X}, Y: {location.Y} -> R={r}, G={g}, B={b}, HEX={hex}");
+        savedColors.Add(hex);
     }
 
     wasLeftDown = isLeftDown;
